@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Temu_in;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class TemuInController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $data = Category::all();
+        return view('category.index', [
+        'category'=> $data,
+        ]);
     }
 
     /**
@@ -20,7 +23,7 @@ class TemuInController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -28,13 +31,18 @@ class TemuInController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+        $category->category_code = $request->category_code;
+        $category->name = $request->name;
+        $category->save();
+        return redirect('/category');
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Temu_in $temu_in)
+    public function show(Category $category)
     {
         //
     }
@@ -42,7 +50,7 @@ class TemuInController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Temu_in $temu_in)
+    public function edit(Category $category)
     {
         //
     }
@@ -50,7 +58,7 @@ class TemuInController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Temu_in $temu_in)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -58,7 +66,7 @@ class TemuInController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Temu_in $temu_in)
+    public function destroy(Category $category)
     {
         //
     }
