@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -31,11 +33,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category();
-        $category->category_code = $request->category_code;
-        $category->name = $request->name;
-        $category->save();
-        return redirect('/category');
+        DB::beginTransaction();
+        try {
+            $category = new category();
+            $category->name = $request->name;
+            $category->category_code = $request->category_code;
+            $category->save();
+            DB::commit();
+            session()->flash('success', 'Category saved successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('error', $e);
+        }
+        return redirect('category');
         
     }
 
@@ -50,24 +60,45 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = category::findOrFail($id);
+        // dd($category);
+        return view('category.edit', [
+            'category' => $category
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $category = category::findOrFail($id);
+            $category->name = $request->name;
+            $category->category_code = $request->category_code;
+            $category->save();
+            DB::commit();
+            session()->flash('success', 'Category updated successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('error', $e);
+        }
+        return redirect('category');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+    $category = Category::findOrFail($id); 
+    $category->delete();
+    return redirect('/category')->with('success', 'Category deleted successfully');
     }
+
 }

@@ -125,6 +125,7 @@
     </div>
         <ul>
             <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/barang">Barang</a></li>
             <li><a href="/category">Category</a></li>
             <li><a href="/about">About</a></li>
         </ul>
@@ -136,9 +137,9 @@
         <table>
             <thead>
                 <tr> 
-                    <th>Jenis Barang</th>
-                    <th>Nama Barang</th> 
-                    <th>Barang</th>
+                    <th>Kode Kategori</th>
+                    <th>Nama Kategori</th> 
+                    <th>Aksi</th>
                 </tr> 
             </thead>
             <tbody> 
@@ -147,12 +148,12 @@
                     <td>{{ $data->category_code }}</td>
                     <td>{{ $data->name }}</td> 
                     <td class="action-buttons">
-                        <a href="/category/edit/{{ $data->id }}">Edit</a>
-                        <form action="/category/{{ $data->id }}" method="post">
-                            @method('delete')
-                            @csrf
-                            <button type="submit">Delete</button> 
-                        </form> 
+                    <a href="{{ url('category/' . $data->id . '/edit') }}" class="btn btn-success btn-sm">Edit</a>
+                    <form action="{{ url('category/' . $data->id) }}" method="POST" style="display:inline;">
+                     @csrf
+                     @method('DELETE')
+                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                     </td>
                 </tr> 
                 @endforeach 

@@ -8,16 +8,20 @@ Route::get('/', function () {
 });
 
 //Kelompok_1 
-Route::prefix('/category')->group(function(){
-    // nampilin index
+Route::prefix('/category')->group(function () {
+    // Tampilkan index
     Route::get('/', [CategoryController::class, 'index']);
-    //nampilin create
+
+    // Tampilkan form create dan proses store
     Route::get('/create', [CategoryController::class, 'create']);
-    Route::post('/',[CategoryController::class, 'store']);
-    // nampilin edit
-    Route::get('/edit/ {id}',[CategoryController::class, 'edit']);
+    Route::post('/', [CategoryController::class, 'store']);
+
+    // Tampilkan form edit dan proses update
+    Route::get('/{id}/edit', [CategoryController::class, 'edit']); // Perbaikan posisi parameter
     Route::patch('/{id}', [CategoryController::class, 'update']);
-    //nampilin delete 
-    Route::delete('/{id}', [CategoryController::class, 'destroy']); 
+
+    // Proses delete
+    Route::delete('/{id}', [CategoryController::class, 'destroy']);
 });
+
 
